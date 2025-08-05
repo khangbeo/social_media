@@ -61,12 +61,20 @@ export const Navbar = () => {
                 </button>
               </div>
             ) : (
-              <Link
-                to="/sign-up"
-                className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600 hover:transition-colors duration-300"
-              >
-                Sign Up / Sign In
-              </Link>
+              <>
+                <Link
+                  to="/sign-up"
+                  className="px-3 py-1.5 mr-2 font-semibold rounded hover:text-purple-500 hover:transition-colors duration-300"
+                >
+                  Sign Up
+                </Link>
+                <Link
+                  to="/login"
+                  className="px-3 py-1.5 ml-2 font-semibold rounded hover:text-purple-500 hover:transition-colors duration-300"
+                >
+                  Sign In
+                </Link>
+              </>
             )}
           </div>
           {/* Mobile Menu Button */}
