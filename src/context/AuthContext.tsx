@@ -6,6 +6,10 @@ import { supabase } from "../supabase-client";
 interface AuthContextType {
   user: User | null;
   signInWithGithub: () => void;
+  signUpNewUser: (
+    email: string,
+    password: string
+  ) => Promise<{ success: true; user: User } | { error: { message: string } }>;
   signOut: () => void;
 }
 
@@ -37,16 +41,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     supabase.auth.signInWithOAuth({ provider: "github" });
   };
 
-  // const signUpNewUser = async () => {
-  //     const { data, error } = await supabase
-  // }
+  const signUpNewUser = async (
+    email: string,
+    password: string
+  ): Promise<
+    { success: true; user: User } | { error: { message: string } }
+  > => {
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+
+    if (error) return { error: { message: error.message } };
+
+    const user = data.user;
+    if (!user) return { error: { message: "No user returned from signup." } };
+
+    return { success: true, user };
+  };
 
   const signOut = () => {
     supabase.auth.signOut();
   };
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGithub, signOut }}>
+    <AuthContext.Provider
+      value={{ user, signInWithGithub, signUpNewUser, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

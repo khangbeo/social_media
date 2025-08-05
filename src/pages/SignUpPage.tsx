@@ -1,26 +1,44 @@
-import { useAuth } from "../context/AuthContext";
+import Form from "../components/Form";
 
 const SignUpPage = () => {
-  const { signInWithGithub } = useAuth();
+  /*
+  🔐 AUTH TODOs (using Supabase Auth)
+
+  ✅ Supabase handles:
+  - [x] User account creation (email/password)
+  - [x] Password hashing/verification
+  - [x] UUIDs as user IDs
+  - [x] OAuth (if configured)
+  - [x] Password reset via email link
+
+  🧠 Your responsibilities:
+
+  📄 Sign Up
+  - [ ] Build signup form UI
+  - [x] Use `supabase.auth.signUp()` with email/password
+  - [x] Handle auth errors and edge cases
+  - [ ] Add client-side validation
+
+  🔑 Sign In
+  - [ ] Build login form UI
+  - [ ] Use `supabase.auth.signInWithPassword()`
+  - [ ] Add "Remember Me" toggle (optional)
+  - [ ] Add sign-in with OAuth (e.g. Google)
+
+  🔁 Password Reset
+  - [ ] Add "Forgot Password?" link
+  - [ ] Use `supabase.auth.resetPasswordForEmail()`
+  - [ ] Create a Reset Password page (for magic link)
+
+  🗃️ User Metadata
+  - [ ] Create a `profiles` table (or `users`) linked to `auth.users`
+  - [ ] Insert user profile on `signUp`
+  - [ ] Update your code to use UUIDs from `auth.users.id`
+  */
+
   return (
     <div>
-      <h2>Create Account</h2>
-      <div>
-        <button
-          onClick={signInWithGithub}
-          className="bg-blue-500 px-3 py-1 rounded cursor-pointer hover:bg-blue-600 hover:transition-colors duration-300"
-        >
-          Sign In With Github
-        </button>
-      </div>
-      <form>
-        <input type="text" placeholder="Username" />
-        <input type="text" placeholder="Email" />
-        <input type="text" placeholder="Create password" />
-        <input type="text" placeholder="Confirm password" />
-        <button>Sign Up</button>
-        <p>Already have an account? Login</p>
-      </form>
+      <Form />
     </div>
   );
 };
