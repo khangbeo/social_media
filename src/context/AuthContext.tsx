@@ -3,13 +3,15 @@ import type { User } from "@supabase/supabase-js"; //
 import { createContext, useState, useContext, useEffect } from "react";
 import { supabase } from "../supabase-client";
 
+type AuthResult =
+  | { success: true; user: User }
+  | { error: { message: string } };
+
 interface AuthContextType {
   user: User | null;
   signInWithGithub: () => void;
-  signUpNewUser: (
-    email: string,
-    password: string
-  ) => Promise<{ success: true; user: User } | { error: { message: string } }>;
+  signUpNewUser: (email: string, password: string) => Promise<AuthResult>;
+  signInWithEmail: (email: string, password: string) => Promise<AuthResult>;
   signOut: () => void;
 }
 
@@ -60,13 +62,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return { success: true, user };
   };
 
+  const signInWithEmail = async (
+    email: string,
+    password: string
+  ): Promise<AuthResult> => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) return { error: { message: error.message } };
+
+    const user = data.user;
+    if (!user) return { error: { message: "No user returned from login." } };
+
+    return { success: true, user };
+  };
+
   const signOut = () => {
     supabase.auth.signOut();
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, signInWithGithub, signUpNewUser, signOut }}
+      value={{
+        user,
+        signInWithGithub,
+        signInWithEmail,
+        signUpNewUser,
+        signOut,
+      }}
     >
       {children}
     </AuthContext.Provider>
