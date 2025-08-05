@@ -67,12 +67,6 @@ export const Navbar = () => {
               >
                 Sign Up / Sign In
               </Link>
-              // <button
-              //   onClick={signInWithGithub}
-              //   className="bg-blue-500 px-3 py-1 rounded"
-              // >
-              //   Sign In With Github
-              // </button>
             )}
           </div>
           {/* Mobile Menu Button */}
